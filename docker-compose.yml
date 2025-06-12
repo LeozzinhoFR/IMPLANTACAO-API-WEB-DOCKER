@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./produtoapi
+    container_name: produto-api-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - h2-data:/app/data
+    networks:
+      - produto-net
+
+  frontend:
+    build: ./frontend
+    container_name: produto-app-frontend
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - produto-net
+
+networks:
+  produto-net:
+    driver: bridge
+
+volumes:
+  h2-data:
+    driver: local
